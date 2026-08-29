@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect
  
 import sqlite3
+from database import create_database
+app = Flask(__name__)
+create_database()
 
 app = Flask(__name__,static_folder="static")
 school_data =[]
