@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>School Data</title>
+
+    <style>
+        body {
+            
+            
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f5f7fa;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background-color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        th {
+            background-color: #eeeeee;
+        }
+        h1 {
+    text-align: center;
+    background: linear-gradient(135deg, #1565c0, #6a1b9a);
+    color: white;
+    padding: 25px;
+    margin: 0 0 30px 0;
+    border-radius: 0 0 20px 20px;
+}
+
+table {
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+th {
+    background: #1565c0;
+    color: white;
+    padding: 14px;
+}
+
+td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background: #f3e5f5;
+}
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+    margin: 0;
+    padding: 0;
+}
+.summary-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 30px auto;
+    width: 90%;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    flex: 1;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+    color: #1565c0;
+    margin-top: 0;
+}
+
+.card p {
+    color: #666;
+}
+.recommendation-box {
+    width: 85%;
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+}
+
+.recommendation-box h2 {
+    color: #6a1b9a;
+    text-align: center;
+}
+
+.recommendation-box p {
+    padding: 8px;
+    line-height: 1.6;
+}
+
+/* your existing CSS */
+
+.school-illustration {
+    width: 90%;
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 35px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #eaf4ff, #ffffff);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 80, 160, 0.15);
+}
+
+.school-building {
+    font-size: 90px;
+    margin-bottom: 10px;
+}
+
+.school-illustration h3 {
+    color: #1565c0;
+    font-size: 25px;
+    margin: 10px 0;
+}
+
+.school-illustration p {
+    color: #555;
+    font-size: 16px;
+}
+
+    </style>
+    <link rel="stylesheet"
+    href="{{ url_for('static',filename='style.css')}}">
+</head>
+    
+    
+
+<body>
+    <a href="/" class="home-button">🏠 Back to Home</a>
+    <div class="summary-cards">
+
+    <div class="card">
+        <h3>🏫 Total Schools</h3>
+        <p>{{total_School }}</p>
+    </div>
+
+    <div class="card">
+        <h3>👨‍🎓 Total Students</h3>
+        <p>{{total_Student }}</p>
+    </div>
+
+    <div class="card">
+        <h3>👩‍🏫 Total Teachers</h3>
+        <p>{{total_Teacher }}</p>
+    </div>
+
+</div>
+
+
+<h2 class="chart-title">📊 School Data Overview</h2>
+
+<div class="chart-container">
+    <canvas id="schoolChart"></canvas>
+</div>
+<div class="recommendation-box">
+    <h2>🤖 Recommendations</h2>
+
+    {% if total_teachers > 0 %}
+        <p>📚 Overall student-teacher ratio:
+            {{ "%.1f"|format(total_students / total_teachers) }}
+            students per teacher.
+        </p>
+    {% else %}
+        <p>⚠️ Teacher data is not available for analysis.</p>
+    {% endif %}
+
+    {% if total_students > 0 and total_teachers > 0 and (total_students / total_teachers) > 30 %}
+        <p>💡 Recommendation: Consider increasing teacher availability based on the current student-teacher ratio.</p>
+    {% else %}
+        <p>✅ The current overall student-teacher ratio does not trigger a high-ratio recommendation.</p>
+    {% endif %}
+</div>
+
+
+    <h1>📊 School Data Dashboard</h1>
+    <form action="/data" method="GET" class="search-box">
+    <input
+        type="text"
+        name="search"
+        placeholder="🔍 Search school by name..."
+    style="padding: 10px 15px ; border: 2px solid #4CAF50; border-radius: 8px ;
+     background-color: #f0fff0; outline: none;"
+        >
+    <button type="submit" 
+    style="background-color: green; color:
+     white; padding: 10px 20px; border: none;
+      border-radius: 8px;">Search</button>
+   <a href="/data" style="background-color:
+    red; color: white; padding: 10px 20px;
+     border-radius: 8px; text-decoration: none;
+      margin-left: 8px;">Clear Search</a>
+</form>
+
+
+    
+<div style="display: flex; gap: 20px; justify-content: center; margin: 30px 0;">
+
+    <div style="padding: 25px; border: 1px solid #333; text-align: center; background: white; min-width: 180px;">
+        <h2>{{ total_schools }}</h2>
+        <p>Total Schools</p>
+    </div>
+
+    <div style="padding: 25px; border: 1px solid #333; text-align: center; background: white; min-width: 180px;">
+        <h2>{{ total_students }}</h2>
+        <p>Total Students</p>
+    </div>
+
+    <div style="padding: 25px; border: 1px solid #333; text-align: center; background: white; min-width: 180px;">
+        <h2>{{ total_teachers }}</h2>
+        <p>Total Teachers</p>
+    </div>
+    
+</div>
+
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>School Name</th>
+            <th>Location</th>
+            <th>Students</th>
+            <th>Teachers</th>
+            <th>Classrooms</th>
+            <th>Laboratories</th>
+            <th>Toilets</th>
+            <th>Computers</th>
+            <th>Recommendation</th>
+            <th>Action</th>
+        </tr>
+
+        {% for school in schools %}
+        <tr>
+            <td>{{ school[0] }}</td>
+            <td>{{ school[1] }}</td>
+            <td>{{ school[2] }}</td>
+            <td>{{ school[3] }}</td>
+            <td>{{ school[4] }}</td>
+            <td>{{ school[5] }}</td>
+            <td>{{ school[6] }}</td>
+            <td>{{ school[7] }}</td>
+            <td>{{ school[8] }}</td>
+            <td>
+    {% if school[4] | int > 0 %}
+        {% set ratio = school[3] | int / school[4] | int %}
+
+        {% if ratio > 40 %}
+    🔴 High priority: Consider increasing teacher availability.
+{% elif ratio > 30 %}
+    🟠 Attention: Review teacher availability.
+{% else %}
+    🟢 Student-teacher ratio looks reasonable.
+{% endif %}
+{% endif %}
+<br>
+
+{% if school[5]|int == 0 %}
+    🔴 High priority: Classroom information is not available.
+{% elif school[3]|int / school[5]|int > 40 %}
+    ⚠️ Consider increasing classroom availability.
+{% endif %}
+
+<br>
+
+{% if school[6]|int == 0 %}
+    🔴 High priority: Consider providing laboratory facilities.
+{% endif %}
+
+<br>
+
+{% if school[7]|int == 0 %}
+    ⚠️ Consider improving toilet facilities.
+{% endif %}
+
+<br>
+
+{% if school[8]|int == 0 %}
+    💻 Consider providing computer facilities.
+{% endif %}
+</td>
+
+<td>
+    <a href="/edit/{{ school[0] }}">Edit</a>
+    |
+    <a href="/delete/{{ school[0] }}">Delete</a>
+</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+<br><br>
+
+<a href="/">
+    <button type="button" style="background-color:#2196F3; 
+    color:white; padding:10px 20px; border:none; 
+    border-radius:8px; cursor:pointer;">
+        🏠 Home
+    </button>
+</a>
+
+<a href="/school">
+    <button type="button" style="background-color:#9C27B0; color:white; padding:10px 20px; border:none; border-radius:8px; cursor:pointer;">
+        ➕ Add School
+    </button>
+</a>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const schoolData = {
+        schools: Number("{{ total_schools }}"),
+        students: Number("{{ total_students }}"),
+        teachers: Number("{{ total_teachers }}")
+    };
+
+    const ctx = document.getElementById("schoolChart");
+
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Schools", "Students", "Teachers"],
+            datasets: [{
+                label: "Total",
+                data: [
+                    schoolData.schools,
+                    schoolData.students,
+                    schoolData.teachers
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+    
+
+</script>
+</body>
+</html>
