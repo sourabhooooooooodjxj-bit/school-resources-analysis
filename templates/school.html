@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>School Registration</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style copy.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            School Standardization
+        </div>
+
+        <div class="menu">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('school') }}">Add School</a>
+        </div>
+    </nav>
+
+    <!-- Registration Section -->
+    <section class="form-section">
+
+        <div class="header">
+            <h1>School Registration</h1>
+            <p>School Data Management System</p>
+        </div>
+
+        <p>
+            Enter the school information below.
+        </p>
+
+        <form action="{{ url_for('submit') }}" method="POST"
+              class="registration-card">
+
+            <h2>School Information</h2>
+
+            <p class="form-subtitle">
+                Enter the school details below
+            </p>
+
+            <label>School Name</label>
+            <input
+                type="text"
+                name="school_name"
+                placeholder="Enter school name"
+                required
+            >
+
+            <label>Location</label>
+            <input
+                type="text"
+                name="location"
+                placeholder="Enter school location"
+                required
+            >
+
+            <label>Number of Students</label>
+            <input
+                type="number"
+                name="students"
+                placeholder="Enter number of students"
+                min="0"
+                required
+            >
+
+            <label>Number of Teachers</label>
+            <input
+                type="number"
+                name="teachers"
+                placeholder="Enter number of teachers"
+                min="0"
+                required
+            >
+
+            <label>Number of Classrooms</label>
+            <input
+                type="number"
+                name="classrooms"
+                placeholder="Enter number of classrooms"
+                min="0"
+                required
+            >
+
+            <label>Number of Laboratories</label>
+            <input
+                type="number"
+                name="laboratories"
+                placeholder="Enter number of laboratories"
+                min="0"
+                required
+            >
+
+            <label>Number of Toilets</label>
+            <input
+                type="number"
+                name="toilets"
+                placeholder="Enter number of toilets"
+                min="0"
+                required
+            >
+
+            <label>Number of Computers</label>
+            <input
+                type="number"
+                name="computers"
+                placeholder="Enter number of computers"
+                min="0"
+                required
+            >
+
+            <button type="submit">
+                Submit School Data
+            </button>
+
+            <br><br>
+
+            <a href="{{ url_for('data') }}">
+                <button type="button">
+                    View School Data
+                </button>
+            </a>
+
+        </form>
+
+    </section>
+
+    <footer>
+        © 2026 School Data Management System
+    </footer>
+
+</body>
+
+</html>
