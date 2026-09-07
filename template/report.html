@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>School Resource Report</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="dashboard-panel report-page">
+        <h2>📊 School Resource Summary</h2>
+<p>
+    The following summary presents the current school resources
+    recorded in the system.
+</p>
+<div class="summary-cards">
+    <div class="card">
+        <h3>🏫 Schools</h3>
+        <p>{{ total_schools }}</p>
+    </div>
+
+    <div class="card">
+        <h3>👨‍🎓 Students</h3>
+        <p>{{ total_students }}</p>
+    </div>
+
+    <div class="card">
+        <h3>👩‍🏫 Teachers</h3>
+        <p>{{ total_teachers }}</p>
+    </div>
+
+    <div class="card">
+        <h3>🏢 Classrooms</h3>
+        <p>{{ total_classrooms }}</p>
+    </div>
+</div>
+<div class="summary-cards">
+    <div class="card">
+        <h3>🧪 Laboratories</h3>
+        <p>{{ total_laboratories }}</p>
+    </div>
+
+    <div class="card">
+        <h3>🚻 Toilets</h3>
+        <p>{{ total_toilets }}</p>
+    </div>
+
+    <div class="card">
+        <h3>💻 Computers</h3>
+        <p>{{ total_computers }}</p>
+    </div>
+</div>
+<div class="recommendation-card">
+    <h2>📌 Report Summary</h2>
+    <p>
+        The collected school data provides an overview of the availability
+        of teachers and essential infrastructure. The analysis can help
+        identify resource gaps and support better planning and allocation
+        of resources among schools.
+    </p>
+</div>
+<div class="recommendation-card">
+    <h2>📊 School Resource Comparison</h2>
+
+    <div style="height: 350px;">
+        <canvas id="resourceChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const schoolNames = JSON.parse('{{ school_names | tojson | safe }}');
+    const studentCounts = JSON.parse('{{ student_counts | tojson | safe }}');
+    const teacherCounts = JSON.parse('{{ teacher_counts | tojson | safe }}');
+
+    new Chart(document.getElementById("resourceChart"), {
+        type: "bar",
+        data: {
+            labels: schoolNames,
+            datasets: [
+                {
+                    label: "Students",
+                    data: studentCounts
+                },
+                {
+                    label: "Teachers",
+                    data: teacherCounts
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+        <h1>📄 School Resource Report</h1>
+
+        <p>
+            This report provides an overview of school resources and
+            highlights important infrastructure areas that may require
+            attention.
+        </p>
+
+        <div class="recommendation-card">
+            <h2>🏫 Project Overview</h2>
+            <p>
+                The School Resource Analyzer helps identify differences
+                in school infrastructure and resource availability.
+                It uses school data to support better planning,
+                resource allocation, and educational policy implementation.
+            </p>
+        </div>
+
+<div class="recommendation-card">
+    <h2>📊 Resource Analysis</h2>
+
+    <p>🏫 Total Schools: <strong>{{ total_schools }}</strong></p>
+    <p>👨‍🎓 Total Students: <strong>{{ total_students }}</strong></p>
+    <p>👩‍🏫 Total Teachers: <strong>{{ total_teachers }}</strong></p>
+    <p>🏢 Total Classrooms: <strong>{{ total_classrooms }}</strong></p>
+    <p>🧪 Total Laboratories: <strong>{{ total_laboratories }}</strong></p>
+    <p>🚻 Total Toilets: <strong>{{ total_toilets }}</strong></p>
+    <p>💻 Total Computers: <strong>{{ total_computers }}</strong></p>
+</div>
+
+        <div class="recommendation-card">
+            <h2>⚠️ Key Findings</h2>
+            <p>
+                Schools may have different levels of infrastructure
+                and resource availability. The analysis helps identify
+                schools that may need additional teachers, classrooms,
+                laboratories, computers, or toilet facilities.
+            </p>
+            {% if total_teachers > 0 %}
+           <p>
+           📚 Overall Student-Teacher Ratio:
+           <strong>{{ "%.1f"|format(total_students / total_teachers) }}</strong>
+            students per teacher.
+            </p>
+           {% else %}
+           <p>⚠️ Teacher data is not available for calculating the ratio.</p>
+           {% endif %}
+        </div>
+
+        <div class="recommendation-card">
+            <h2>💡 Importance of the System</h2>
+            <p>
+                The School Resource Analyzer provides a centralized
+                 way to collect, organize, and analyze important school
+                  resource information. It helps identify differences
+                   in the availability of teachers, classrooms, laboratories,
+                    computers, and toilet facilities among schools.
+
+By presenting the information in
+ a clear and organized format, the system makes it easier to understand
+  resource gaps and areas that may require attention. It can support better
+   planning and help decision-makers consider the needs of individual schools when allocating resources.
+
+The system also reduces the difficulty of comparing information 
+from different schools manually. Regular analysis of updated school 
+data can help monitor changes in resources and support more
+ effective educational planning and policy implementation.
+            </p>
+        </div>
+
+        <div class="recommendation-card">
+            <h2>✅ Conclusion</h2>
+           <p>
+    The School Resource Analyzer provides a clear view of school
+    infrastructure and resource availability. By analyzing the
+    collected data, resource gaps can be identified and schools
+    requiring attention can be highlighted. This can support better
+    planning, resource allocation, and educational policy implementation.
+</p>
+        </div>
+
+        <br>
+
+        <a href="/" class="home-button">🏠 Back to Home</a>
+
+    </div>
+
+</body>
+</html>
