@@ -11,8 +11,114 @@ school_data =[]
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    con = sqlite3.connect("school.db")
+    cursor = con.cursor()
 
+    cursor.execute("SELECT COUNT(*) FROM schools")
+    total_schools = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COALESCE(SUM(students), 0) FROM schools")
+    total_students = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COALESCE(SUM(teachers), 0) FROM schools")
+    total_teachers = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COALESCE(SUM(classrooms), 0) FROM schools")
+    total_classrooms = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COALESCE(SUM(laboratories), 0) FROM schools")
+    total_laboratories = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COALESCE(SUM(computers), 0) FROM schools")
+    total_computers = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COALESCE(SUM(toilets), 0) FROM schools")
+    total_toilets = cursor.fetchone()[0]
+
+    cursor.execute("SELECT * FROM schools")
+    schools = cursor.fetchall()
+    school_names = [school[1] for school in schools]
+    student_counts = [school[3] for school in schools]
+    teacher_counts = [school[4] for school in schools]
+
+    con.close()
+
+    return render_template(
+        "index.html",
+        total_schools=total_schools,
+        total_students=total_students,
+        total_teachers=total_teachers,
+        total_classrooms=total_classrooms,
+        total_laboratories=total_laboratories,
+        total_computers=total_computers,
+        total_toilets=total_toilets,
+        schools=schools,
+        school_names=school_names,
+        student_counts=student_counts,
+        teacher_counts=teacher_counts
+    )
+@app.route("/report")
+def report():
+    con = sqlite3.connect("school.db")
+    cursor = con.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM schools")
+    total_schools = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COALESCE(SUM(students), 0) FROM schools")
+    total_students = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COALESCE(SUM(teachers), 0) FROM schools")
+    total_teachers = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COALESCE(SUM(classrooms), 0) FROM schools")
+    total_classrooms = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COALESCE(SUM(laboratories), 0) FROM schools")
+    total_laboratories = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COALESCE(SUM(toilets), 0) FROM schools")
+    total_toilets = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COALESCE(SUM(computers), 0) FROM schools")
+    total_computers = cursor.fetchone()[0]
+
+    cursor.execute("SELECT * FROM schools")
+    schools = cursor.fetchall()
+
+    school_names = [school[1] for school in schools]
+    student_counts = [school[3] for school in schools]
+    teacher_counts = [school[4] for school in schools]
+    con.close()
+
+    return render_template(
+        "report.html",
+        total_schools=total_schools,
+        total_students=total_students,
+        total_teachers=total_teachers,
+        total_classrooms=total_classrooms,
+        total_laboratories=total_laboratories,
+        total_toilets=total_toilets,
+        total_computers=total_computers,
+        schools=schools,
+        school_names=school_names,
+        student_counts=student_counts,
+        teacher_counts=teacher_counts
+    )
+@app.route("/recommendations")
+def recommendation():
+    con = sqlite3.connect("school.db")
+    cursor = con.cursor()
+
+    cursor.execute("SELECT * FROM schools")
+    schools = cursor.fetchall()
+
+    con.close()
+
+    return render_template(
+        "recommendation.html",
+        schools=schools
+    )
 @app.route("/school")
 def school():
     return render_template("school.html")
